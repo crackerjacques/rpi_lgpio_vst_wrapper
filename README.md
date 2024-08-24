@@ -12,7 +12,7 @@ If there is, you are so great.
 
 # Install
 
-extract zip and put .so or folder to ~/.vst, ~/.vst3
+download archive from vst2_binary or vst3_binary dir and extract  and put .so or folder to ~/.vst, ~/.vst3
 and install dependency if you needed.
 
 ```
@@ -33,7 +33,7 @@ sudo ldconfig
 ```
 
 # lgpio_gpio
-
+![gpio]([http://i.imgur.com/Jjwsc.jpg](https://github.com/crackerjacques/rpi_lgpio_vst_wrapper/blob/main/images/gpio.png?raw=true) "gpio")
 Checkboxes and toggles arranged like an Idaho potato field. It looks like the rural landscape of Niigata Prefecture where I grew up. 
 In other words, it's a bit drab.
 If this find /dev/spidev*, the pins for spi are grayed out.
@@ -43,7 +43,7 @@ If this find /dev/spidev*, the pins for spi are grayed out.
 The user interface is as desolate as a desert.
 Sooner or later, a camel will emerge from the shade of the faders.
 
-# ws2812_spi
+# ws2812_tester
 
 first (of all)
 https://github.com/jgarff/rpi_ws281x

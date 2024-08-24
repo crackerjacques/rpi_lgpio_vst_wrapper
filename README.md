@@ -43,10 +43,16 @@ If this find /dev/spidev*, the pins for spi are grayed out.
 
 # lgpio_pwm
 
+![pwm](https://github.com/user-attachments/assets/e38ba7ad-cd09-4817-9985-74fe07d27756)
+
+
 The user interface is as desolate as a desert.
 Sooner or later, a camel will emerge from the shade of the faders.
 
 # ws2812_tester
+
+
+![spi](https://github.com/user-attachments/assets/1873be96-f0e9-471d-b497-e022f95229e5)
 
 first (of all)
 https://github.com/jgarff/rpi_ws281x

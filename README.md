@@ -49,7 +49,7 @@ first (of all)
 https://github.com/jgarff/rpi_ws281x
 
 I would like you to look here and set up your own hardware.
-Don't panic, because cmdline.txt and config.txt have been moved to /boot/firmware/.
+___note : cmdline.txt and config.txt have been moved to /boot/firmware/.___
 
 Connect the signal pin of WS2812 to pin 10, and connect power and GND. Now it's party time.
 I don't recommend using the Raspberry Pi built-in power pins. The available current is limited.
@@ -60,3 +60,8 @@ Also, a 3.3>5V level shifter would be better.
 That said, I experimented with a tape with 7 LEDs mounted on it for testing and had no problem with the built-in power supply for this level.
 
 This one is the only one very much in order. I am sure he is sorry too, so forgive him.
+
+#
+
+Overall, VST3 is more stable than VST2.
+When building, use Projucer to open the projucer files in each plug-in directory

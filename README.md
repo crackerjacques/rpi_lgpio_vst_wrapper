@@ -3,7 +3,7 @@
 ![leds](https://github.com/user-attachments/assets/caa9318c-d068-4812-bda5-a86546036146)
 
 
-LGPIO and rpi_ws281x wrapped to VST.
+LGPIO ( https://github.com/joan2937/lg ) and rpi_ws281x ( https://github.com/jgarff/rpi_ws281x ) wrapped to VST.
 Completed to the extent that it somehow works.
 
 The operation was checked with Reaper 7.20.

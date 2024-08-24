@@ -42,7 +42,7 @@ sudo ldconfig
 ![gpio](https://github.com/user-attachments/assets/d928cc3b-5a9f-4378-84e6-ba9cef833f44)
 
 
-Checkboxes and toggles arranged like an Idaho potato field. It looks like the rural landscape of Niigata Prefecture where I grew up. 
+Checkboxes arranged like an Idaho potato field. It looks like the rural landscape of Niigata Prefecture where I grew up. 
 In other words, it's a bit drab.
 If this find /dev/spidev*, the pins for spi are grayed out.
 

@@ -32,3 +32,30 @@ sudo ldconfig
 
 ```
 
+# lgpio_gpio
+
+Checkboxes and toggles arranged like an Idaho potato field. It looks like the rural landscape of Niigata Prefecture where I grew up. 
+In other words, it's a bit drab.
+If this find /dev/spidev*, the pins for spi are grayed out.
+
+# lgpio_pwm
+
+The user interface is as desolate as a desert.
+Sooner or later, a camel will emerge from the shade of the faders.
+
+# ws2812_spi
+
+first (of all)
+https://github.com/jgarff/rpi_ws281x
+I would like you to look here and set up your own hardware.
+Don't panic, because cmdline.txt and config.txt have been moved to /boot/firmware/.
+
+Connect the signal pin of WS2812 to pin 10, and connect power and GND. Now it's party time.
+I don't recommend using the Raspberry Pi built-in power pins. The available current is limited.
+(Excessive current flow may cause paperweight)
+
+Also, a 3.3>5V level shifter would be better.
+
+That said, I experimented with a tape with 7 LEDs mounted on it for testing and had no problem with the built-in power supply for this level.
+
+This one is the only one very much in order. I am sure he is sorry too, so forgive him.

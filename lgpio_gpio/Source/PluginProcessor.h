@@ -39,6 +39,8 @@ public:
 
     bool initializeGPIO();
     void updateGPIOState(int pin, bool state);
+    void updateGPIOMode(int pin, bool isOutput);
+    bool isSPIAvailable();
 
     juce::AudioProcessorValueTreeState parameters;
 
@@ -47,8 +49,12 @@ public:
         14, 15, 18, 23, 24, 25, 8, 7, 12, 16, 20, 21, 0, 1
     };
 
+    std::array<bool, 28> isGPIOUsedBySPI;
+    std::array<bool, 28> isGPIOOutput;
+
 private:
     std::array<std::atomic<float>*, 28> gpioStates;
+    std::array<std::atomic<float>*, 28> gpioModes; 
     int handle = -1;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LgpioGpioAudioProcessor)

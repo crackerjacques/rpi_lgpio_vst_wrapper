@@ -34,19 +34,69 @@ LgpioGpioAudioProcessor::LgpioGpioAudioProcessor()
         std::make_unique<juce::AudioParameterBool>("gpio20", "GPIO 20", false),
         std::make_unique<juce::AudioParameterBool>("gpio21", "GPIO 21", false),
         std::make_unique<juce::AudioParameterBool>("gpio0", "GPIO 0", false),
-        std::make_unique<juce::AudioParameterBool>("gpio1", "GPIO 1", false)
+        std::make_unique<juce::AudioParameterBool>("gpio1", "GPIO 1", false),
+        // モードパラメータを追加
+        std::make_unique<juce::AudioParameterBool>("gpio2_mode", "GPIO 2 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio3_mode", "GPIO 3 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio4_mode", "GPIO 4 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio17_mode", "GPIO 17 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio27_mode", "GPIO 27 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio22_mode", "GPIO 22 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio10_mode", "GPIO 10 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio9_mode", "GPIO 9 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio11_mode", "GPIO 11 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio5_mode", "GPIO 5 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio6_mode", "GPIO 6 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio13_mode", "GPIO 13 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio19_mode", "GPIO 19 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio26_mode", "GPIO 26 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio14_mode", "GPIO 14 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio15_mode", "GPIO 15 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio18_mode", "GPIO 18 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio23_mode", "GPIO 23 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio24_mode", "GPIO 24 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio25_mode", "GPIO 25 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio8_mode", "GPIO 8 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio7_mode", "GPIO 7 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio12_mode", "GPIO 12 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio16_mode", "GPIO 16 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio20_mode", "GPIO 20 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio21_mode", "GPIO 21 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio0_mode", "GPIO 0 Mode", true),
+        std::make_unique<juce::AudioParameterBool>("gpio1_mode", "GPIO 1 Mode", true)
     })
 {
     for (int i = 0; i < gpioPins.size(); ++i) {
         gpioStates[i] = parameters.getRawParameterValue("gpio" + juce::String(gpioPins[i]));
+        gpioModes[i] = parameters.getRawParameterValue("gpio" + juce::String(gpioPins[i]) + "_mode");
+        isGPIOOutput[i] = true;  // デフォルトで出力モード
+    }
+
+    isGPIOUsedBySPI.fill(false);
+    if (isSPIAvailable())
+    {
+        for (int pin : {7, 8, 9, 10, 11})
+        {
+            auto it = std::find(gpioPins.begin(), gpioPins.end(), pin);
+            if (it != gpioPins.end())
+            {
+                int index = std::distance(gpioPins.begin(), it);
+                isGPIOUsedBySPI[index] = true;
+            }
+        }
     }
 
     handle = lgGpiochipOpen(0);
     if (handle < 0) {
-        juce::Logger::writeToLog("Failed to open GPIO chip");
+        juce::Logger::writeToLog("Failed to open GPIO chip. Error: " + juce::String(handle));
     }
     else {
-        initializeGPIO();
+        juce::Logger::writeToLog("Successfully opened GPIO chip. Handle: " + juce::String(handle));
+        if (initializeGPIO()) {
+            juce::Logger::writeToLog("GPIO initialization successful");
+        } else {
+            juce::Logger::writeToLog("GPIO initialization failed");
+        }
     }
 }
 
@@ -137,7 +187,6 @@ bool LgpioGpioAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts
     juce::ignoreUnused (layouts);
     return true;
   #else
-
     if (layouts.getMainOutputChannelSet() != juce::AudioChannelSet::mono()
      && layouts.getMainOutputChannelSet() != juce::AudioChannelSet::stereo())
         return false;
@@ -162,8 +211,20 @@ void LgpioGpioAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer, ju
         buffer.clear (i, 0, buffer.getNumSamples());
 
     for (int i = 0; i < gpioPins.size(); ++i) {
-        bool state = *gpioStates[i] > 0.5f;
-        updateGPIOState(gpioPins[i], state);
+        if (!isGPIOUsedBySPI[i]) {
+            bool newMode = *gpioModes[i] > 0.5f;
+            if (newMode != isGPIOOutput[i]) {
+                updateGPIOMode(gpioPins[i], newMode);
+            }
+            if (isGPIOOutput[i]) {
+                bool state = *gpioStates[i] > 0.5f;
+                updateGPIOState(gpioPins[i], state);
+            } else {
+                // 入力モードの場合、ここでピンの状態を読み取ることができます
+                // 例: int value = lgGpioRead(handle, gpioPins[i]);
+                // 読み取った値を使って何かする（例：パラメータを更新する）
+            }
+        }
     }
 
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
@@ -206,15 +267,20 @@ bool LgpioGpioAudioProcessor::initializeGPIO()
 {
     if (handle < 0) return false;
 
-    for (int pin : gpioPins) {
-        int result = lgGpioClaimOutput(handle, 0, pin, 0);  // INIT
-        if (result < 0) {
-            juce::Logger::writeToLog("Failed to claim GPIO pin " + juce::String(pin) + ": " + juce::String(result));
-            return false;
+    bool anySuccess = false;
+    for (int i = 0; i < gpioPins.size(); ++i) {
+        if (!isGPIOUsedBySPI[i]) {
+            int pin = gpioPins[i];
+            int result = lgGpioClaimOutput(handle, 0, pin, 0);  // INIT as output
+            if (result < 0) {
+                juce::Logger::writeToLog("Failed to claim GPIO pin " + juce::String(pin) + ": " + juce::String(result));
+            } else {
+                anySuccess = true;
+            }
         }
     }
 
-    return true;
+    return anySuccess;
 }
 
 void LgpioGpioAudioProcessor::updateGPIOState(int pin, bool state)
@@ -222,6 +288,26 @@ void LgpioGpioAudioProcessor::updateGPIOState(int pin, bool state)
     if (handle >= 0) {
         lgGpioWrite(handle, pin, state ? 1 : 0);
     }
+}
+
+void LgpioGpioAudioProcessor::updateGPIOMode(int pin, bool isOutput)
+{
+    if (handle >= 0) {
+        int index = std::distance(gpioPins.begin(), std::find(gpioPins.begin(), gpioPins.end(), pin));
+        if (index < gpioPins.size()) {
+            isGPIOOutput[index] = isOutput;
+            if (isOutput) {
+                lgGpioClaimOutput(handle, 0, pin, 0);
+            } else {
+                lgGpioClaimInput(handle, 0, pin);
+            }
+        }
+    }
+}
+
+bool LgpioGpioAudioProcessor::isSPIAvailable()
+{
+    return juce::File("/dev/spidev0.0").exists() || juce::File("/dev/spidev0.1").exists();
 }
 
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter()

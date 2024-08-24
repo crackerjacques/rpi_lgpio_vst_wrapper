@@ -1,5 +1,6 @@
 # GPIO Controller VST Plugins for Raspberry Pi >3B
 
+![leds](https://github.com/user-attachments/assets/caa9318c-d068-4812-bda5-a86546036146)
 
 
 LGPIO and rpi_ws281x wrapped to VST.

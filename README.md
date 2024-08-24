@@ -51,7 +51,7 @@ If this find /dev/spidev*, the pins for spi are grayed out.
 ![pwm](https://github.com/user-attachments/assets/e38ba7ad-cd09-4817-9985-74fe07d27756)
 
 
-The user interface is as desolate as a desert.
+This user interface is as desolate as a desert.
 Sooner or later, a camel will emerge from the shade of the faders.
 
 # ws2812_tester

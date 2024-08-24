@@ -47,6 +47,7 @@ Sooner or later, a camel will emerge from the shade of the faders.
 
 first (of all)
 https://github.com/jgarff/rpi_ws281x
+
 I would like you to look here and set up your own hardware.
 Don't panic, because cmdline.txt and config.txt have been moved to /boot/firmware/.
 

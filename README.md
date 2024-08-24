@@ -65,8 +65,7 @@ Connect the signal pin of WS2812 to pin 10, and connect power and GND. Now it's 
 I don't recommend using the Raspberry Pi built-in power pins. The available current is limited.
 (Excessive current flow may cause paperweight)
 
-![circuit_ex](https://github.com/user-attachments/assets/250303af-2224-4f60-9968-e0faf7716bed)
-
+<img src="https://github.com/user-attachments/assets/250303af-2224-4f60-9968-e0faf7716bed" width="66%" alt="circuit_ex">
 
 Also, a 3.3>5V level shifter would be better.
 

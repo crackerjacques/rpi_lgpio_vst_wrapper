@@ -4,7 +4,9 @@
 
 
 LGPIO ( https://github.com/joan2937/lg ) 
+
 and 
+
 rpi_ws281x ( https://github.com/jgarff/rpi_ws281x ) wrapped to VST with JUCE.
 Completed to the extent that it somehow works.
 

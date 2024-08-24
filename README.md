@@ -10,7 +10,7 @@ and
 rpi_ws281x ( https://github.com/jgarff/rpi_ws281x ) wrapped to VST with JUCE.
 Completed to the extent that it somehow works.
 
-The operation was checked with Reaper 7.20.
+The operation was checked with Reaper 7.20 on Raspberry pi 3B/4B/CM4/5.
 
 Computer musician friendly PWM and LED control is possible, but who is going to compose music with a Linux SBC?
 If there is, you are so great.

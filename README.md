@@ -58,6 +58,7 @@ first (of all)
 https://github.com/jgarff/rpi_ws281x
 
 I would like you to look here and set up your own hardware.
+
 ___note : cmdline.txt and config.txt have been moved to /boot/firmware/.___
 
 Connect the signal pin of WS2812 to pin 10, and connect power and GND. Now it's party time.
